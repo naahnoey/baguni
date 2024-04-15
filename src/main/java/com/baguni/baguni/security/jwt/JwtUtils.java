@@ -47,11 +47,13 @@ public class JwtUtils {
         return cookie;
     }
 
+    // null값 가지는 쿠키 반환
     public ResponseCookie getCleanJwtCookie() {
         ResponseCookie cookie = ResponseCookie.from(jwtCookie, null).path("/api").build();
         return cookie;
     }
 
+    // JWT에서 username 가져오기
     public String getUserNameFromJwtToken(String token) {
         return Jwts.parserBuilder().setSigningKey(key()).build()
                 .parseClaimsJws(token).getBody().getSubject();
