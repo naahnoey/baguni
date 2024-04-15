@@ -9,12 +9,16 @@ public class UserInfoResponse {
     private UUID id;
     private String username;
     private String email;
+    private String nickname;
+    private Integer headcount;
     private List<String> role;
 
-    public UserInfoResponse(UUID id, String username, String email, List<String> role) {
+    public UserInfoResponse(UUID id, String username, String email, String nickname, Integer headcount, List<String> role) {
         this.id = id;
         this.username = username;
         this.email = email;
+        this.nickname = nickname;
+        this.headcount = headcount;
         this.role = role;
     }
 
@@ -26,6 +30,14 @@ public class UserInfoResponse {
         this.id = id;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -34,12 +46,20 @@ public class UserInfoResponse {
         this.email = email;
     }
 
-    public String getUsername() {
-        return username;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public Integer getHeadcount() {
+        return headcount;
+    }
+
+    public void setHeadcount(Integer headcount) {
+        this.headcount = headcount;
     }
 
     public List<String> getRole() {

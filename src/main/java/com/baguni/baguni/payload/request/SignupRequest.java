@@ -1,6 +1,5 @@
 package com.baguni.baguni.payload.request;
 
-import com.baguni.baguni.domain.user.UserRole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -24,7 +23,7 @@ public class SignupRequest {
     private String nickname;
 
     @NotBlank
-    private Integer count;
+    private Integer headcount;
 
     private String role;
 
@@ -60,12 +59,12 @@ public class SignupRequest {
         this.nickname = nickname;
     }
 
-    public Integer getCount() {
-        return count;
+    public Integer getHeadcount() {
+        return headcount;
     }
 
-    public void setCount(Integer count) {
-        this.count = count;
+    public void setHeadcount(Integer headcount) {
+        this.headcount = headcount;
     }
 
     public String getRole() {

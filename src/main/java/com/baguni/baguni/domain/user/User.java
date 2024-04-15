@@ -15,7 +15,7 @@ import java.util.UUID;
         })
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", columnDefinition = "BINARY(16)")
     private UUID id;
 
@@ -40,7 +40,7 @@ public class User {
 
     @NotBlank
     @ColumnDefault("1")
-    private Integer count;
+    private Integer headcount;
 
     @ColumnDefault("0")
     private Integer points;
@@ -49,12 +49,12 @@ public class User {
     private UserRole role;
 
     public User() {}
-    public User(String username, String email, String password, String nickname, Integer count) {
+    public User(String username, String email, String password, String nickname, Integer headcount) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.nickname = nickname;
-        this.count = count;
+        this.headcount = headcount;
     }
 
     public UUID getId() {
@@ -89,11 +89,11 @@ public class User {
         this.nickname = nickname;
     }
 
-    public Integer getCount() {
-        return count;
+    public Integer getHeadcount() {
+        return headcount;
     }
-    public void setCount(Integer count) {
-        this.count = count;
+    public void setHeadcount(Integer count) {
+        this.headcount = count;
     }
 
     public Integer getPoints() {
@@ -115,7 +115,7 @@ public class User {
         return "User [id = " + id
                 + ", username = " + username
                 + ", email = " + email
-                + ", count = " + count
+                + ", count = " + headcount
                 + ", points = " + points
                 + ", role = " + role + "]";
     }

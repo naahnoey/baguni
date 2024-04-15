@@ -22,18 +22,18 @@ public class UserDetailsImpl implements UserDetails {
 
     private String nickname;
 
-    private Integer count;
+    private Integer headcount;
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserDetailsImpl(UUID id, String username, String email, String password, String nickname, Integer count,
+    public UserDetailsImpl(UUID id, String username, String email, String password, String nickname, Integer headcount,
                            Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
         this.nickname = nickname;
-        this.count = count;
+        this.headcount = headcount;
         this.authorities = authorities;
     }
 
@@ -47,7 +47,7 @@ public class UserDetailsImpl implements UserDetails {
                 user.getEmail(),
                 user.getPassword(),
                 user.getNickname(),
-                user.getCount(),
+                user.getHeadcount(),
                 authorities);
     }
 
@@ -78,8 +78,8 @@ public class UserDetailsImpl implements UserDetails {
         return nickname;
     }
 
-    public int getCount() {
-        return count;
+    public int getHeadcount() {
+        return headcount;
     }
 
     @Override
