@@ -21,7 +21,7 @@ public class SignupRequest {
 
     @NotBlank
     @Size(min = 3, max = 20)
-    private String nickname;
+    private String realname;
 
     @NotNull
     private Integer headcount;
@@ -52,12 +52,12 @@ public class SignupRequest {
         this.password = password;
     }
 
-    public String getNickname() {
-        return nickname;
+    public String getRealname() {
+        return realname;
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
+    public void setRealname(String realname) {
+        this.realname = realname;
     }
 
     public Integer getHeadcount() {

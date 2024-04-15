@@ -1,7 +1,5 @@
 package com.baguni.baguni.payload.response;
 
-import com.baguni.baguni.domain.user.UserRole;
-
 import java.util.List;
 import java.util.UUID;
 
@@ -9,15 +7,15 @@ public class UserInfoResponse {
     private UUID id;
     private String username;
     private String email;
-    private String nickname;
+    private String realname;
     private Integer headcount;
     private List<String> role;
 
-    public UserInfoResponse(UUID id, String username, String email, String nickname, Integer headcount, List<String> role) {
+    public UserInfoResponse(UUID id, String username, String email, String realname, Integer headcount, List<String> role) {
         this.id = id;
         this.username = username;
         this.email = email;
-        this.nickname = nickname;
+        this.realname = realname;
         this.headcount = headcount;
         this.role = role;
     }
@@ -46,12 +44,12 @@ public class UserInfoResponse {
         this.email = email;
     }
 
-    public String getNickname() {
-        return nickname;
+    public String getRealname() {
+        return realname;
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
+    public void setRealname(String realname) {
+        this.realname = realname;
     }
 
     public Integer getHeadcount() {

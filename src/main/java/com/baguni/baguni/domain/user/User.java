@@ -34,7 +34,7 @@ public class User {
 
     @NotBlank
     @Size(min = 3, max = 10, message = "이름은 3 ~ 10자여야 합니다.")
-    private String nickname;
+    private String realname;
 
     private String profile_image_url;
 
@@ -48,12 +48,16 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
+    @OneToOne
+    @JoinColumn(name = "info_id", unique = true)
+    private UserInfo userinfo;
+
     public User() {}
-    public User(String username, String email, String password, String nickname, Integer headcount) {
+    public User(String username, String email, String password, String realname, Integer headcount) {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.nickname = nickname;
+        this.realname = realname;
         this.headcount = headcount;
     }
 
@@ -82,11 +86,11 @@ public class User {
         this.password = password;
     }
 
-    public String getNickname() {
-        return nickname;
+    public String getRealname() {
+        return realname;
     }
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
+    public void setRealname(String realname) {
+        this.realname = realname;
     }
 
     public Integer getHeadcount() {
