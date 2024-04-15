@@ -4,14 +4,14 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import org.hibernate.annotations.ColumnDefault;
 
-import java.util.Set;
 import java.util.UUID;
 
 @Entity
 @Table(name = "users",
         uniqueConstraints = {
-                @UniqueConstraint(columnNames = "email")
+            @UniqueConstraint(columnNames = "email")
         })
 public class User {
     @Id
@@ -34,10 +34,12 @@ public class User {
 
     private String profile_image_url;
 
-    private Integer points;
-
     @NotBlank
+    @ColumnDefault("1")
     private Integer count;
+
+    @ColumnDefault("0")
+    private Integer points;
 
     @Enumerated(EnumType.STRING)
     private UserRole role;
@@ -82,6 +84,13 @@ public class User {
         this.count = count;
     }
 
+    public int getPoints() {
+        return points;
+    }
+    public void setPoints(int points) {
+        this.points = points;
+    }
+
     public UserRole getRole() {
         return role;
     }
@@ -95,6 +104,7 @@ public class User {
                 + ", username = " + username
                 + ", email = " + email
                 + ", count = " + count
-                + "role = " + role + "]";
+                + ", points = " + points
+                + ", role = " + role + "]";
     }
 }
