@@ -2,6 +2,7 @@ package com.baguni.baguni.payload.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public class SignupRequest {
@@ -15,14 +16,14 @@ public class SignupRequest {
     private String email;
 
     @NotBlank
-    @Size(min = 6, max = 40)
+    @Size(min = 8, max = 13)
     private String password;
 
     @NotBlank
     @Size(min = 3, max = 20)
     private String nickname;
 
-    @NotBlank
+    @NotNull
     private Integer headcount;
 
     private String role;
