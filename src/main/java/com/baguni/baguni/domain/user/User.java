@@ -20,7 +20,7 @@ public class User {
     private UUID id;
 
     @NotBlank
-    @Size(min = 3, max = 10, message = "이름은 3 ~ 10자여야 합니다.")
+    @Column(name = "username", unique = true)
     private String username;
 
     @NotBlank
@@ -31,6 +31,10 @@ public class User {
     @NotBlank
     @Size(min = 8, max = 13, message = "비밀번호는 8 ~ 13자")
     private String password;
+
+    @NotBlank
+    @Size(min = 3, max = 10, message = "이름은 3 ~ 10자여야 합니다.")
+    private String nickname;
 
     private String profile_image_url;
 
@@ -45,10 +49,11 @@ public class User {
     private UserRole role;
 
     public User() {}
-    public User(String username, String email, String password, Integer count) {
+    public User(String username, String email, String password, String nickname, Integer count) {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.nickname = nickname;
         this.count = count;
     }
 
@@ -77,17 +82,24 @@ public class User {
         this.password = password;
     }
 
-    public int getCount() {
+    public String getNickname() {
+        return nickname;
+    }
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public Integer getCount() {
         return count;
     }
-    public void setCount(int count) {
+    public void setCount(Integer count) {
         this.count = count;
     }
 
-    public int getPoints() {
+    public Integer getPoints() {
         return points;
     }
-    public void setPoints(int points) {
+    public void setPoints(Integer points) {
         this.points = points;
     }
 

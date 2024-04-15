@@ -7,7 +7,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class UserDetailsImpl implements UserDetails {
     private static final long serialVersionUID = 1L;
@@ -21,31 +20,33 @@ public class UserDetailsImpl implements UserDetails {
     @JsonIgnore
     private String password;
 
+    private String nickname;
+
     private Integer count;
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserDetailsImpl(UUID id, String username, String email, String password, Integer count,
+    public UserDetailsImpl(UUID id, String username, String email, String password, String nickname, Integer count,
                            Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
+        this.nickname = nickname;
         this.count = count;
         this.authorities = authorities;
     }
 
     public static UserDetailsImpl build(User user) {
         List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(() -> {
-            return user.getRole().name();
-        });
+        authorities.add(new SimpleGrantedAuthority(user.getRole().name()));
 
         return new UserDetailsImpl(
                 user.getId(),
                 user.getUsername(),
                 user.getEmail(),
                 user.getPassword(),
+                user.getNickname(),
                 user.getCount(),
                 authorities);
     }
@@ -71,6 +72,10 @@ public class UserDetailsImpl implements UserDetails {
     @Override
     public String getPassword() {
         return password;
+    }
+
+    public String getNickname() {
+        return nickname;
     }
 
     public int getCount() {
