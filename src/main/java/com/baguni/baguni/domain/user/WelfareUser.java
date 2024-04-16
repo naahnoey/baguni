@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "welfareUsers",
@@ -12,8 +13,10 @@ import jakarta.persistence.UniqueConstraint;
                 @UniqueConstraint(columnNames = "email")
         })
 public class WelfareUser extends User {
+    @NotBlank
     private String category;
 
+    @NotBlank
     private String telephone;
 
     @Column(length = 2000)

@@ -9,14 +9,18 @@ public class UserInfoResponse {
     private String email;
     private String realname;
     private Integer headcount;
+    private String nickname;
+    private String address;
     private List<String> role;
 
-    public UserInfoResponse(UUID id, String username, String email, String realname, Integer headcount, List<String> role) {
+    public UserInfoResponse(UUID id, String username, String email, String realname, Integer headcount, String nickname, String address, List<String> role) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.realname = realname;
         this.headcount = headcount;
+        this.nickname = nickname;
+        this.address = address;
         this.role = role;
     }
 
@@ -58,6 +62,22 @@ public class UserInfoResponse {
 
     public void setHeadcount(Integer headcount) {
         this.headcount = headcount;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public List<String> getRole() {
