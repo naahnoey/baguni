@@ -1,6 +1,5 @@
 package com.baguni.baguni.domain.user;
 
-import com.baguni.baguni.domain.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -9,11 +8,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, UUID> {
-    List<User> findAll();
+public interface BasicUserRepository extends JpaRepository<BasicUser, UUID> {
+    List<BasicUser> findAll();
     //List<User> findByRole(String role);
 
-    Optional<User> findByUsername(String username);
+    Optional<BasicUser> findByUsername(String username);
 
     Boolean existsByUsername(String username);
     Boolean existsByEmail(String email);

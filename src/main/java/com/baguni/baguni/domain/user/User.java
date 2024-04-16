@@ -9,12 +9,8 @@ import org.hibernate.annotations.ColumnDefault;
 
 import java.util.UUID;
 
-@Entity
-@Table(name = "users",
-        uniqueConstraints = {
-            @UniqueConstraint(columnNames = "email")
-        })
-public class User {
+@MappedSuperclass
+abstract class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", columnDefinition = "BINARY(16)")
@@ -47,10 +43,6 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private UserRole role;
-
-    @OneToOne
-    @JoinColumn(name = "info_id", unique = true)
-    private UserInfo userinfo;
 
     public User() {}
     public User(String username, String email, String password, String realname, Integer headcount) {
