@@ -78,7 +78,7 @@ public class AuthController {
         if (basicUserRepository.existsByUsername(signupRequest.getUsername())) {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is already taken!"));
         }
-        if (basicUserRepository.existsByEmail(signupRequest.getEmail())) {
+        if (welfareUserRepository.existsByEmail(signupRequest.getEmail())) {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Email is already taken!"));
         }
 
@@ -86,14 +86,14 @@ public class AuthController {
         String strRole = signupRequest.getRole();
         UserRole role;
 
-        if (strRole == null) {  // basic user
+        if (strRole == null) {  // 일반 유저 생성
             basicUserRepository.save(createBasicUser(signupRequest));
         } else {
             switch (strRole) {
                 case "admin":
                     role = UserRole.ROLE_ADMIN;
                     break;
-                case "welfare":
+                case "welfare": // 복지관 유저 생성
                     WelfareUser user = new WelfareUser(signupRequest.getUsername(),
                             signupRequest.getEmail(),
                             encoder.encode(signupRequest.getPassword()),

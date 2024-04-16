@@ -39,7 +39,9 @@ public class UserDetailsImpl implements UserDetails {
     private ActivityType activityType;
 
     // Welfare User
-
+    private String category;
+    private String telephone;
+    private String introduction;
 
     public UserDetailsImpl(UUID id, String username, String email, String password, String realname, Integer headcount, String nickname, String address,
                            Collection<? extends GrantedAuthority> authorities) {
@@ -81,7 +83,7 @@ public class UserDetailsImpl implements UserDetails {
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(user.getRole().name()));
 
-        return new UserDetailsImpl(
+        UserDetailsImpl userDetails = new UserDetailsImpl(
                 user.getId(),
                 user.getUsername(),
                 user.getEmail(),
@@ -91,6 +93,10 @@ public class UserDetailsImpl implements UserDetails {
                 user.getNickname(),
                 user.getAddress(),
                 authorities);
+
+        userDetails.setWelfareUserImpl(user.getCategory(), user.getTelephone(), user.getIntroduction());
+
+        return userDetails;
     }
 
     public void setBasicUserImpl(Set<Category> categories, Set<Day> days, Time startTime, Time endTime, ActivityType activityType) {
@@ -99,6 +105,12 @@ public class UserDetailsImpl implements UserDetails {
         this.startTime = startTime;
         this.endTime = endTime;
         this.activityType = activityType;
+    }
+
+    public void setWelfareUserImpl(String category, String telephone, String introduction) {
+        this.category = category;
+        this.telephone = telephone;
+        this.introduction = introduction;
     }
 
     @Override
