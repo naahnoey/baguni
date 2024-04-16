@@ -13,6 +13,10 @@ public class UserInfoResponse {
     private String address;
     private List<String> role;
 
+    public UserInfoResponse(String username) {
+        this.username = username;
+        this.email = "ADMIN";
+    }
     public UserInfoResponse(UUID id, String username, String email, String realname, Integer headcount, String nickname, String address, List<String> role) {
         this.id = id;
         this.username = username;

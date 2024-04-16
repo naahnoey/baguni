@@ -64,6 +64,10 @@ public class AuthController {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
 
+        if (userDetails.getAdminId() != null) {
+            return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString()).body(new UserInfoResponse(userDetails.getUsername()));
+        }
+
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
                 .body(new UserInfoResponse(userDetails.getId(),
                         userDetails.getUsername(),
@@ -91,7 +95,6 @@ public class AuthController {
 
         // Create new user's account
         String strRole = signupRequest.getRole();
-        UserRole role;
 
         if (strRole == null) {  // 일반 유저 생성
             basicUserRepository.save(createBasicUser(signupRequest));
@@ -99,6 +102,7 @@ public class AuthController {
             switch (strRole) {
                 case "admin":
                     Admin admin = new Admin(signupRequest.getUsername(), encoder.encode(signupRequest.getPassword()));
+                    admin.setRole(UserRole.ROLE_ADMIN);
                     adminRepository.save(admin);
                     break;
                 case "welfare": // 복지관 유저 생성

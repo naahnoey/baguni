@@ -13,6 +13,7 @@ public class UserDetailsImpl implements UserDetails {
     private static final long serialVersionUID = 1L;
 
     private UUID id;
+    private Long adminId;
 
     private String username;
 
@@ -43,6 +44,13 @@ public class UserDetailsImpl implements UserDetails {
     private String telephone;
     private String introduction;
 
+    public UserDetailsImpl(Long adminId, String username, String password,
+                           Collection<? extends GrantedAuthority> authorities) {
+        this.adminId = adminId;
+        this.username = username;
+        this.password = password;
+        this.authorities = authorities;
+    }
     public UserDetailsImpl(UUID id, String username, String email, String password, String realname, Integer headcount, String nickname, String address,
                            Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
@@ -99,6 +107,17 @@ public class UserDetailsImpl implements UserDetails {
         return userDetails;
     }
 
+    public static UserDetailsImpl build(Admin user) {
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(UserRole.ROLE_ADMIN.name()));
+
+        return new UserDetailsImpl(
+                user.getId(),
+                user.getUsername(),
+                user.getPassword(),
+                authorities);
+    }
+
     public void setBasicUserImpl(Set<Category> categories, Set<Day> days, Time startTime, Time endTime, ActivityType activityType) {
         this.categories = categories;
         this.days = days;
@@ -120,6 +139,10 @@ public class UserDetailsImpl implements UserDetails {
 
     public UUID getId() {
         return id;
+    }
+
+    public Long getAdminId() {
+        return adminId;
     }
 
     @Override
