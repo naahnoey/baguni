@@ -41,16 +41,24 @@ abstract class User {
     @ColumnDefault("0")
     private Integer points;
 
+    @NotBlank
+    @Size(min = 3, max = 20, message = "이름은 3 ~ 20자")
+    private String nickname;
+
+    private String address;
+
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
     public User() {}
-    public User(String username, String email, String password, String realname, Integer headcount) {
+    public User(String username, String email, String password, String realname, Integer headcount, String nickname, String address) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.realname = realname;
         this.headcount = headcount;
+        this.nickname = nickname;
+        this.address = address;
     }
 
     public UUID getId() {
@@ -97,6 +105,20 @@ abstract class User {
     }
     public void setPoints(Integer points) {
         this.points = points;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public UserRole getRole() {

@@ -1,11 +1,12 @@
 package com.baguni.baguni.security.services;
 
-import com.baguni.baguni.domain.user.User;
+import com.baguni.baguni.domain.user.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.sql.Time;
 import java.util.*;
 
 public class UserDetailsImpl implements UserDetails {
@@ -24,9 +25,23 @@ public class UserDetailsImpl implements UserDetails {
 
     private Integer headcount;
 
+    private String nickname;
+
+    private String address;
+
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserDetailsImpl(UUID id, String username, String email, String password, String realname, Integer headcount,
+    // Basic User
+    private Set<Category> categories;
+    private Set<Day> days;
+    private Time startTime;
+    private Time endTime;
+    private ActivityType activityType;
+
+    // Welfare User
+
+
+    public UserDetailsImpl(UUID id, String username, String email, String password, String realname, Integer headcount, String nickname, String address,
                            Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.username = username;
@@ -34,10 +49,35 @@ public class UserDetailsImpl implements UserDetails {
         this.password = password;
         this.realname = realname;
         this.headcount = headcount;
+        this.nickname = nickname;
+        this.address = address;
         this.authorities = authorities;
     }
 
-    public static UserDetailsImpl build(User user) {
+    public static UserDetailsImpl build(BasicUser user) {
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(user.getRole().name()));
+
+        UserDetailsImpl userDetails = new UserDetailsImpl(
+                user.getId(),
+                user.getUsername(),
+                user.getEmail(),
+                user.getPassword(),
+                user.getRealname(),
+                user.getHeadcount(),
+                user.getNickname(),
+                user.getAddress(),
+                authorities);
+
+        userDetails.setBasicUserImpl(user.getCategories(),
+                user.getDays(),
+                user.getStartTime(),
+                user.getEndTime(),
+                user.getActivityType());
+
+        return userDetails;
+    }
+    public static UserDetailsImpl build(WelfareUser user) {
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(user.getRole().name()));
 
@@ -48,7 +88,17 @@ public class UserDetailsImpl implements UserDetails {
                 user.getPassword(),
                 user.getRealname(),
                 user.getHeadcount(),
+                user.getNickname(),
+                user.getAddress(),
                 authorities);
+    }
+
+    public void setBasicUserImpl(Set<Category> categories, Set<Day> days, Time startTime, Time endTime, ActivityType activityType) {
+        this.categories = categories;
+        this.days = days;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.activityType = activityType;
     }
 
     @Override
@@ -80,6 +130,14 @@ public class UserDetailsImpl implements UserDetails {
 
     public int getHeadcount() {
         return headcount;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public String getAddress() {
+        return address;
     }
 
     @Override

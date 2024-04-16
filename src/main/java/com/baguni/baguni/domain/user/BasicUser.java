@@ -12,8 +12,6 @@ import java.util.Set;
                 @UniqueConstraint(columnNames = "email")
         })
 public class BasicUser extends User {
-    private String nickname;
-
     private Set<Category> categories;
 
     private Set<Day> days;
@@ -22,29 +20,17 @@ public class BasicUser extends User {
 
     private Time endTime;
 
-    private String region;
-
     private ActivityType activityType;
 
     public BasicUser() {}
-    public BasicUser(String username, String email, String password, String realname, Integer headcount,
-            String nickname, Set<Category> categories, Set<Day> days, Time startTime, Time endTime, String region, ActivityType activityType) {
-        super(username, email, password, realname, headcount);
-        this.nickname = nickname;
+    public BasicUser(String username, String email, String password, String realname, Integer headcount, String nickname, String address,
+            Set<Category> categories, Set<Day> days, Time startTime, Time endTime, ActivityType activityType) {
+        super(username, email, password, realname, headcount, nickname, address);
         this.categories = categories;
         this.days = days;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.region = region;
         this.activityType = activityType;
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
     }
 
     public Set<Category> getCategories() {
@@ -77,14 +63,6 @@ public class BasicUser extends User {
 
     public void setEndTime(Time endTime) {
         this.endTime = endTime;
-    }
-
-    public String getRegion() {
-        return region;
-    }
-
-    public void setRegion(String region) {
-        this.region = region;
     }
 
     public ActivityType getActivityType() {
