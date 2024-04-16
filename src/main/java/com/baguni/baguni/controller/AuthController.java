@@ -24,7 +24,6 @@ import java.sql.Time;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.TimeZone;
 import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -39,6 +38,9 @@ public class AuthController {
 
     @Autowired
     WelfareUserRepository welfareUserRepository;
+
+    @Autowired
+    AdminRepository adminRepository;
 
     @Autowired
     PasswordEncoder encoder;
@@ -75,11 +77,16 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signupRequest) {
-        if (basicUserRepository.existsByUsername(signupRequest.getUsername())) {
-            return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is already taken!"));
+        if (basicUserRepository.existsByUsername(signupRequest.getUsername())
+            || basicUserRepository.existsByEmail(signupRequest.getEmail())) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Username or email is already taken!"));
         }
-        if (welfareUserRepository.existsByEmail(signupRequest.getEmail())) {
-            return ResponseEntity.badRequest().body(new MessageResponse("Error: Email is already taken!"));
+        if (welfareUserRepository.existsByEmail(signupRequest.getEmail())
+            || welfareUserRepository.existsByEmail(signupRequest.getEmail())) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Username or email is already taken!"));
+        }
+        if (adminRepository.existsByUsername(signupRequest.getUsername())) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is already taken!"));
         }
 
         // Create new user's account
@@ -91,7 +98,8 @@ public class AuthController {
         } else {
             switch (strRole) {
                 case "admin":
-                    role = UserRole.ROLE_ADMIN;
+                    Admin admin = new Admin(signupRequest.getUsername(), encoder.encode(signupRequest.getPassword()));
+                    adminRepository.save(admin);
                     break;
                 case "welfare": // 복지관 유저 생성
                     WelfareUser user = new WelfareUser(signupRequest.getUsername(),
