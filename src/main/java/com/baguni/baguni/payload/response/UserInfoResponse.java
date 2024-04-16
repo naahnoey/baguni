@@ -3,6 +3,9 @@ package com.baguni.baguni.payload.response;
 import java.util.List;
 import java.util.UUID;
 
+/*
+ * 로그인 성공 시 유저 정보 반환
+ */
 public class UserInfoResponse {
     private UUID id;
     private String username;

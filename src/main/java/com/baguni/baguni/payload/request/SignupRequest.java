@@ -9,6 +9,9 @@ import jakarta.validation.constraints.Size;
 import java.sql.Time;
 import java.util.Set;
 
+/*
+ * 회원가입 시 필요한 정보를 담은 payload
+ */
 public class SignupRequest {
     @NotBlank
     @Size(max = 50)

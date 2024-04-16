@@ -9,6 +9,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.sql.Time;
 import java.util.*;
 
+/*
+ * 인증 과정 성공 후 Authentication 객체에서 가져온 유저 정보
+ * username, password, authorities 외의 정보도 더 가져오기 위해 UserDetails 인터페이스 구현
+ * 
+ * 일반 유저, 복지관 유저, 관리자 구분
+ */
 public class UserDetailsImpl implements UserDetails {
     private static final long serialVersionUID = 1L;
 
@@ -44,6 +50,7 @@ public class UserDetailsImpl implements UserDetails {
     private String telephone;
     private String introduction;
 
+    // 관리자
     public UserDetailsImpl(Long adminId, String username, String password,
                            Collection<? extends GrantedAuthority> authorities) {
         this.adminId = adminId;
@@ -51,6 +58,8 @@ public class UserDetailsImpl implements UserDetails {
         this.password = password;
         this.authorities = authorities;
     }
+    
+    // 일반, 복지관 유저
     public UserDetailsImpl(UUID id, String username, String email, String password, String realname, Integer headcount, String nickname, String address,
                            Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
@@ -118,6 +127,7 @@ public class UserDetailsImpl implements UserDetails {
                 authorities);
     }
 
+    // 일반 유저 추가 정보
     public void setBasicUserImpl(Set<Category> categories, Set<Day> days, Time startTime, Time endTime, ActivityType activityType) {
         this.categories = categories;
         this.days = days;
@@ -126,6 +136,7 @@ public class UserDetailsImpl implements UserDetails {
         this.activityType = activityType;
     }
 
+    // 복지관 유저 추가 정보
     public void setWelfareUserImpl(String category, String telephone, String introduction) {
         this.category = category;
         this.telephone = telephone;

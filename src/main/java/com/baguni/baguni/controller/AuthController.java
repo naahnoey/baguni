@@ -48,6 +48,7 @@ public class AuthController {
     @Autowired
     JwtUtils jwtUtils;
 
+    // 로그인
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
@@ -56,6 +57,7 @@ public class AuthController {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
+        // 인증 성공 후 유저 정보 가져오기
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
         ResponseCookie jwtCookie = jwtUtils.generateJwtCookie(userDetails);
@@ -64,6 +66,7 @@ public class AuthController {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
 
+        // 로그인 한 계정이 admin 계정일 경우
         if (userDetails.getAdminId() != null) {
             return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString()).body(new UserInfoResponse(userDetails.getUsername()));
         }
@@ -79,8 +82,10 @@ public class AuthController {
                         role));
     }
 
+    // 회원가입
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signupRequest) {
+        // 아이디 중복 체크
         if (basicUserRepository.existsByUsername(signupRequest.getUsername())
             || basicUserRepository.existsByEmail(signupRequest.getEmail())) {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Username or email is already taken!"));
@@ -93,14 +98,14 @@ public class AuthController {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is already taken!"));
         }
 
-        // Create new user's account
+        // 새 계정 생성
         String strRole = signupRequest.getRole();
 
         if (strRole == null) {  // 일반 유저 생성
             basicUserRepository.save(createBasicUser(signupRequest));
         } else {
             switch (strRole) {
-                case "admin":
+                case "admin":   // admin 계정 생성
                     Admin admin = new Admin(signupRequest.getUsername(), encoder.encode(signupRequest.getPassword()));
                     admin.setRole(UserRole.ROLE_ADMIN);
                     adminRepository.save(admin);
@@ -122,7 +127,7 @@ public class AuthController {
                     welfareUserRepository.save(user);
 
                     break;
-                default:
+                default:    // 일반 유저 생성
                     basicUserRepository.save(createBasicUser(signupRequest));
             };
         }
@@ -130,6 +135,7 @@ public class AuthController {
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
 
+    // 로그아웃
     @PostMapping("/signout")
     public ResponseEntity<?> logoutUser() {
         ResponseCookie cookie = jwtUtils.getCleanJwtCookie();
@@ -157,8 +163,7 @@ public class AuthController {
                 case "health_care" -> Category.HEALTH_CARE;
                 case "safety" -> Category.SAFETY;
                 case "abandoned_animal" -> Category.ABANDONED_ANIMAL;
-                case "entire" -> Category.ENTIRE;
-                default -> throw new IllegalArgumentException("Invalid input: " + strCategory);
+                default -> Category.ENTIRE;
             };
 
             categories.add(category);

@@ -2,6 +2,9 @@ package com.baguni.baguni.payload.request;
 
 import jakarta.validation.constraints.NotBlank;
 
+/*
+ * 로그인 시 필요한 정보를 담은 payload
+ */
 public class LoginRequest {
     @NotBlank
     private String username;
