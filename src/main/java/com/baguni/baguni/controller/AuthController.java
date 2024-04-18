@@ -79,7 +79,8 @@ public class AuthController {
                         userDetails.getHeadcount(),
                         userDetails.getNickname(),
                         userDetails.getAddress(),
-                        role));
+                        role,
+                        userDetails.getCreatedAt().toString()));
     }
 
     // 회원가입

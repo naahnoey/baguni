@@ -15,12 +15,13 @@ public class UserInfoResponse {
     private String nickname;
     private String address;
     private List<String> role;
+    private String createdAt;
 
     public UserInfoResponse(String username) {
         this.username = username;
         this.email = "ADMIN";
     }
-    public UserInfoResponse(UUID id, String username, String email, String realname, Integer headcount, String nickname, String address, List<String> role) {
+    public UserInfoResponse(UUID id, String username, String email, String realname, Integer headcount, String nickname, String address, List<String> role, String createdAt) {
         this.id = id;
         this.username = username;
         this.email = email;
@@ -29,6 +30,7 @@ public class UserInfoResponse {
         this.nickname = nickname;
         this.address = address;
         this.role = role;
+        this.createdAt = createdAt;
     }
 
     public UUID getId() {
@@ -89,5 +91,9 @@ public class UserInfoResponse {
 
     public List<String> getRole() {
         return role;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
     }
 }

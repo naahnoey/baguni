@@ -6,7 +6,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @MappedSuperclass
@@ -49,6 +51,10 @@ abstract class User {
 
     @Enumerated(EnumType.STRING)
     private UserRole role;
+
+    @CreationTimestamp
+    @Column(name = "created_at")
+    final private LocalDateTime createdAt = LocalDateTime.now();
 
     public User() {}
     public User(String username, String email, String password, String realname, Integer headcount, String nickname, String address) {
@@ -128,6 +134,10 @@ abstract class User {
         this.role = role;
     }
 
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
     @Override
     public String toString() {
         return "User [id = " + id
@@ -135,6 +145,7 @@ abstract class User {
                 + ", email = " + email
                 + ", count = " + headcount
                 + ", points = " + points
-                + ", role = " + role + "]";
+                + ", role = " + role
+                + ", createdAt = " + createdAt + "]";
     }
 }

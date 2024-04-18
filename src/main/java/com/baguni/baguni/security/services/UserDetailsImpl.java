@@ -7,6 +7,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.sql.Time;
+import java.time.LocalDateTime;
 import java.util.*;
 
 /*
@@ -38,6 +39,8 @@ public class UserDetailsImpl implements UserDetails {
 
     private Collection<? extends GrantedAuthority> authorities;
 
+    private LocalDateTime createdAt;
+
     // Basic User
     private Set<Category> categories;
     private Set<Day> days;
@@ -61,7 +64,8 @@ public class UserDetailsImpl implements UserDetails {
     
     // 일반, 복지관 유저
     public UserDetailsImpl(UUID id, String username, String email, String password, String realname, Integer headcount, String nickname, String address,
-                           Collection<? extends GrantedAuthority> authorities) {
+                           Collection<? extends GrantedAuthority> authorities,
+                           LocalDateTime createdAt) {
         this.id = id;
         this.username = username;
         this.email = email;
@@ -71,6 +75,7 @@ public class UserDetailsImpl implements UserDetails {
         this.nickname = nickname;
         this.address = address;
         this.authorities = authorities;
+        this.createdAt = createdAt;
     }
 
     public static UserDetailsImpl build(BasicUser user) {
@@ -86,7 +91,8 @@ public class UserDetailsImpl implements UserDetails {
                 user.getHeadcount(),
                 user.getNickname(),
                 user.getAddress(),
-                authorities);
+                authorities,
+                user.getCreatedAt());
 
         userDetails.setBasicUserImpl(user.getCategories(),
                 user.getDays(),
@@ -109,7 +115,8 @@ public class UserDetailsImpl implements UserDetails {
                 user.getHeadcount(),
                 user.getNickname(),
                 user.getAddress(),
-                authorities);
+                authorities,
+                user.getCreatedAt());
 
         userDetails.setWelfareUserImpl(user.getCategory(), user.getTelephone(), user.getIntroduction());
 
@@ -184,6 +191,10 @@ public class UserDetailsImpl implements UserDetails {
 
     public String getAddress() {
         return address;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
     @Override
