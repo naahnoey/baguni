@@ -11,6 +11,10 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+/*
+ * Authentication Exception 처리
+ * 인증되지 않은 사용자가 보안된 HTTP resource를 요청할 때마다 실행
+ */
 @Component
 public class AuthEntryPointJwt implements AuthenticationEntryPoint {
     private static final Logger logger = LoggerFactory.getLogger(AuthEntryPointJwt.class);

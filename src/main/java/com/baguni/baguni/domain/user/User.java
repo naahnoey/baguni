@@ -6,15 +6,13 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Entity
-@Table(name = "users",
-        uniqueConstraints = {
-            @UniqueConstraint(columnNames = "email")
-        })
-public class User {
+@MappedSuperclass
+abstract class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", columnDefinition = "BINARY(16)")
@@ -34,7 +32,7 @@ public class User {
 
     @NotBlank
     @Size(min = 3, max = 10, message = "이름은 3 ~ 10자여야 합니다.")
-    private String nickname;
+    private String realname;
 
     private String profile_image_url;
 
@@ -45,16 +43,28 @@ public class User {
     @ColumnDefault("0")
     private Integer points;
 
+    @NotBlank
+    @Size(min = 3, max = 20, message = "이름은 3 ~ 20자")
+    private String nickname;
+
+    private String address;
+
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
+    @CreationTimestamp
+    @Column(name = "created_at")
+    final private LocalDateTime createdAt = LocalDateTime.now();
+
     public User() {}
-    public User(String username, String email, String password, String nickname, Integer headcount) {
+    public User(String username, String email, String password, String realname, Integer headcount, String nickname, String address) {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.nickname = nickname;
+        this.realname = realname;
         this.headcount = headcount;
+        this.nickname = nickname;
+        this.address = address;
     }
 
     public UUID getId() {
@@ -82,11 +92,11 @@ public class User {
         this.password = password;
     }
 
-    public String getNickname() {
-        return nickname;
+    public String getRealname() {
+        return realname;
     }
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
+    public void setRealname(String realname) {
+        this.realname = realname;
     }
 
     public Integer getHeadcount() {
@@ -103,11 +113,29 @@ public class User {
         this.points = points;
     }
 
+    public String getNickname() {
+        return nickname;
+    }
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     public UserRole getRole() {
         return role;
     }
     public void setRole(UserRole role) {
         this.role = role;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
     @Override
@@ -117,6 +145,7 @@ public class User {
                 + ", email = " + email
                 + ", count = " + headcount
                 + ", points = " + points
-                + ", role = " + role + "]";
+                + ", role = " + role
+                + ", createdAt = " + createdAt + "]";
     }
 }
