@@ -26,7 +26,7 @@ public class PostController {
     // 게시글 불러오기
     // 전체 게시글
     @GetMapping("/list")
-    public ResponseEntity<List<Post>> getAllPosts(@RequestParam(required = false) String title) {
+    public ResponseEntity<?> getAllPosts(@RequestParam(required = false) String title) {
         try {
             List<Post> posts;
 
@@ -37,39 +37,39 @@ public class PostController {
             }
 
             if (posts.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+                return new ResponseEntity<>(new MessageResponse("내용 없음"), HttpStatus.NO_CONTENT);
             }
 
             return new ResponseEntity<>(posts, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new MessageResponse("내부 서버 오류"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     // 특정 게시글
     @GetMapping("/{id}")
-    public ResponseEntity<Post> getPostById(@PathVariable("id") Long id) {
+    public ResponseEntity<?> getPostById(@PathVariable("id") Long id) {
         Optional<Post> postData = postRepository.findById(id);
 
         if (postData.isPresent()) {
             return new ResponseEntity<>(postData.get(), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new MessageResponse("게시글이 없습니다."), HttpStatus.NOT_FOUND);
         }
     }
 
     // 유저 정보로 찾기
     @GetMapping("/{nickname}")
-    public ResponseEntity<List<Post>> findByNickname(@PathVariable("nickname") String nickname) {
+    public ResponseEntity<?> findByNickname(@PathVariable("nickname") String nickname) {
         try {
             List<Post> posts = postRepository.findByUserNickname(nickname);
 
             if (posts.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+                return new ResponseEntity<>(new MessageResponse("검색 결과가 없습니다."), HttpStatus.NO_CONTENT);
             }
             return new ResponseEntity<>(posts, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new MessageResponse("내부 서버 오류"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -83,18 +83,17 @@ public class PostController {
                 return new ResponseEntity<>(new MessageResponse("로그인 필요"), HttpStatus.NOT_ACCEPTABLE);
             }
 
-            System.out.println(userInfo.getId());
             Post _post = postRepository.save(new Post(post.getTitle(), post.getContent(), userInfo.getId(), userInfo.getNickname()));
             return new ResponseEntity<>(_post, HttpStatus.CREATED);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            // System.out.println(e.getMessage());
             return new ResponseEntity<>(new MessageResponse("서버 오류 발생"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     // 게시글 수정
     @PutMapping("/{id}")
-    public ResponseEntity<Post> updatePost(@PathVariable("id") Long id, @RequestBody Post post) {
+    public ResponseEntity<?> updatePost(@PathVariable("id") Long id, @RequestBody Post post) {
         Optional<Post> postData = postRepository.findById(id);
 
         if (postData.isPresent()) {
@@ -103,18 +102,18 @@ public class PostController {
             _post.setContent(post.getContent());
             return new ResponseEntity<>(postRepository.save(_post), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new MessageResponse("게시글을 찾을 수 없습니다."), HttpStatus.NOT_FOUND);
         }
     }
 
     // 게시글 삭제
     @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus> deletePost(@PathVariable("id") Long id) {
+    public ResponseEntity<?> deletePost(@PathVariable("id") Long id) {
         try {
             postRepository.deleteById(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new MessageResponse("내부 서버 오류"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
