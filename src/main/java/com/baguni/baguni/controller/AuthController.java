@@ -209,4 +209,15 @@ public class AuthController {
         
         return user;
     }
+
+    // 현재 로그인 하고 있는 사용자 정보 가져오기
+    public UserDetailsImpl getCurrentUserInfo() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null) {
+            return (UserDetailsImpl) authentication.getPrincipal();
+        } else {
+            return null;
+        }
+    }
 }

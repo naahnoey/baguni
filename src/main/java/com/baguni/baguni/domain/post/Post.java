@@ -12,7 +12,7 @@ import java.util.UUID;
 @Table(name = "posts")
 public class Post {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank
@@ -36,7 +36,100 @@ public class Post {
     @Column(name = "user_id")
     private UUID userId;
 
+    @NotBlank
+    @Column(name = "user_nickname")
+    private String userNickname;
+
     @CreationTimestamp
     @Column(name = "created_at")
     final private LocalDateTime createdAt = LocalDateTime.now();
+
+    public Post() {}
+    public Post(String title, String content, UUID userId, String userNickname) {
+        this.title = title;
+        this.content = content;
+        this.userId = userId;
+        this.userNickname = userNickname;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getImg1() {
+        return img1;
+    }
+
+    public void setImg1(String img1) {
+        this.img1 = img1;
+    }
+
+    public String getImg2() {
+        return img2;
+    }
+
+    public void setImg2(String img2) {
+        this.img2 = img2;
+    }
+
+    public String getImg3() {
+        return img3;
+    }
+
+    public void setImg3(String img3) {
+        this.img3 = img3;
+    }
+
+    public String getImg4() {
+        return img4;
+    }
+
+    public void setImg4(String img4) {
+        this.img4 = img4;
+    }
+
+    public Long getBoxId() {
+        return boxId;
+    }
+
+    public void setBoxId(Long boxId) {
+        this.boxId = boxId;
+    }
+
+    public UUID getUserId() {
+        return userId;
+    }
+
+    public String getUserNickname() {
+        return userNickname;
+    }
+
+    public void setUserNickname(String userNickname) {
+        this.userNickname = userNickname;
+    }
+
+    public void setUserId(UUID userId) {
+        this.userId = userId;
+    }
+
+    @Override
+    public String toString() {
+        return "Post [id=" + id + ", title=" + title + ", content=" + content + ", nickname=" + userNickname + "]";
+    }
 }
